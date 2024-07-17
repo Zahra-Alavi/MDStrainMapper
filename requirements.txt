@@ -1,9 +1,10 @@
+cupy-cuda12x==13.2.0
 h5py==3.11.0
 matplotlib==3.8.4
+MDAnalysis==2.7.0
 numpy==1.26.4
 pandas==2.2.2
 seaborn==0.13.2
-cupy-cuda110==12.3.0
-MDAnalysis==2.7.0
+
 
 
