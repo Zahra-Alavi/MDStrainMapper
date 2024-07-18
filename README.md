@@ -67,21 +67,17 @@ from src.utils import load_h5_data_to_df, smooth_data, plot_heatmap
 ```
 Step 2: Load and Process Trajectory Data:
 ```python
-# Load the trajectory
 universe = load_universe('data/1ZNX_topology.gro', '1ZNX_mdtraj.xtc')
 ```
 
 _Important_: this step is computationally expensive and requires a GPU. Make sure your CUDA version matches that of the cuda_cupy.
 
 ```python
-# Process the trajectory and save the output
 process_trajectory(universe, output='results/local_strain.h5')
 ```
 Step 3: Load and Plot Heatmap of Trajectory Data
 ```python
-# Load the data
 strain_data_df = load_h5_data_to_df('results/local_strain.h5')
 
-# Plot the heatmap
 plot_heatmap(df, window_size=10, filename='heatmap.png')
 ```
