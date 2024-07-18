@@ -9,6 +9,7 @@ Table of Contents
 * [ 🧬&nbsp; Usage](#🧬&nbsp;-usage)
   * [ Static Strain](#static-strain)
   * [ Trajectory Processing](#trajectory-processing)
+* [ Contributing](#contributing)
 
 
 
@@ -35,17 +36,17 @@ Ensure you have the correct version of CUDA to use CuPy effectively.
 
 ## 🚀&nbsp; Getting Started
 
-### Step 1: Clone the Repository
+##### Step 1: Clone the Repository
 
 ```sh
 git clone https://github.com/Zahra-Alavi/MDStrainMapper.git
 cd MDStrainMapper
 ```
-#### Step 2: Install Dependencies
+##### Step 2: Install Dependencies
 ```sh
 pip install -r requirements.txt
 ```
-### Step 3: Download the Trajectory File
+##### Step 3: Download the Trajectory File
 
 For demonstration purposes, download a sample trajectory file: 
 ```sh 
@@ -61,13 +62,13 @@ $$
 S_i = \frac{1}{N_i} \sum_{\substack{j = 1 \\ j \neq i \\ \Delta_{c}(i, j) < \text{cutoff}}}^{n} \left( \frac{\Delta_{o}(i, j) - \Delta_{c}(i, j)}{\Delta_{c}(i, j)} \right)
 $$
 
-#### Step 1: Import Custom Modules 
+##### Step 1: Import Custom Modules 
 
 ```python
 from src.static_strain import calculate_distance, calculate_strain, plot_strain
 ```
 
-#### Step 2: Calculate and Plot Strain
+##### Step 2: Calculate and Plot Strain
 
 ```python
 from src.trajectory_processing import load_universe
@@ -89,21 +90,22 @@ S_i(t) = \frac{1}{N_i} \sum_{\substack{j = 1 \\ j \neq i \\ }}^{n} \left( \frac{
 for: \Delta_{i, j}^{\text{initial}} < \text{cutoff}
 $$
 
-#### Step 1: Import Custom Modules
+##### Step 1: Import Custom Modules
 ```python
 from src.trajectory_processing import load_universe, process_traj
 from src.utils import load_h5_data_to_df, smooth_data, plot_heatmap
 ```
 
-#### Step 2: Load and Process Trajectory Data
+##### Step 2: Load and Process Trajectory Data
 _Note: This step is computationally expensive and requires a GPU._
 ```python
 universe = load_universe('data/1ZNX_topology.gro', '1ZNX_mdtraj.xtc')
 process_traj(universe, output='results/local_strain.h5')
 ```
-#### Step 3: Load and Plot Heatmap of Trajectory Data
+##### Step 3: Load and Plot Heatmap of Trajectory Data
 ```python
 strain_data_df = load_h5_data_to_df('results/local_strain.h5')
 plot_heatmap(strain_data_df, window_size=10, filename='heatmap.png')
 ```
-
+## Contributing
+Contributions are welcome! Please submit a pull request or open an issue to discuss any changes.
