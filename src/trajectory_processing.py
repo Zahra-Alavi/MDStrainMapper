@@ -11,7 +11,24 @@ import cupy as cp
 import h5py
 
 def load_universe(trajectory_file, topology_file=None):
-    return mda.Universe(topology_file, trajectory_file) if topology_file else mda.Universe(trajectory_file)
+    """
+    Load the MDAnalysis Universe from a topology and trajectory file.
+    :param trajectory_file: Path to the trajectory file.
+    :param topology_file: Path to the topology file. Optional if trajectory file contains topology information.
+    :return: MDAnalysis Universe object.
+    """
+    try:
+        if topology_file:
+            universe = mda.Universe(topology_file, trajectory_file)
+        else:
+            universe = mda.Universe(trajectory_file)
+        print("Universe loaded successfully")
+        print("Number of atoms:", len(universe.atoms))
+        print("Total number of residues:", len(universe.residues))
+        return universe
+    except Exception as e:
+        print("Failed to load universe. Error:", str(e))
+        return None  # or raise an exception depending on how you want to handle errors
 
 def process_trajectory(universe, output_file='changes_sum.h5'):
     protein = universe.select_atoms('protein')
