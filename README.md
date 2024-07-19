@@ -66,13 +66,13 @@ where $S_i$ is the net strain (relative distance change) on residue i, $\Delta_{
 ##### Step 1: Import Custom Modules 
 
 ```python
-from src.static_strain import calculate_distance, calculate_strain, plot_strain
+from src.utils import load_universe, plot_strain
+from src.static_strain import calculate_distance, calculate_strain
 ```
 
 ##### Step 2: Calculate and Plot Strain
 
 ```python
-from src.trajectory_processing import load_universe
 
 conf1 = load_universe('data/open.pdb')
 conf2 = load_universe('data/closed.pdb')
@@ -80,7 +80,7 @@ conf2 = load_universe('data/closed.pdb')
 distance_matrix_conf1 = calculate_distance(conf1)
 distance_matrix_conf2 = calculate_distance(conf2)
 
-strains = calculate_strain(distance_matrix_conf2, distance_matrix_conf1)
+strains = calculate_strain(distance_matrix_conf2, distance_matrix_conf1, output_csv='static_strain.csv')
 plot_strain(strains, filename='static_strain.png')
 ```
 ### Trajectory Processing
@@ -96,8 +96,8 @@ where $S_i(t)$ is the net strain (relative distance change) on residue i at time
 
 ##### Step 1: Import Custom Modules
 ```python
-from src.trajectory_processing import load_universe, process_traj
-from src.utils import load_h5_data_to_df, smooth_data, plot_heatmap
+from src.utils import load_h5_data_to_df, smooth_data, plot_heatmap, load_universe
+from src.trajectory_processing import process_traj
 ```
 
 ##### Step 2: Load and Process Trajectory Data
