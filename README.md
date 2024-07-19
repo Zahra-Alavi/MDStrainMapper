@@ -9,6 +9,7 @@ Table of Contents
 * [ 🧬&nbsp; Usage](#🧬&nbsp;-usage)
   * [ Static Strain](#static-strain)
   * [ Trajectory Processing](#trajectory-processing)
+* [ 🐳&nbsp; Using the Docker Image with Your Own Data](#🐳&nbsp;-using-the-docker-image-with-your-own-data)
 * [ Contributing](#contributing)
 
 
@@ -107,5 +108,21 @@ process_traj(universe, output='results/local_strain.h5')
 strain_data_df = load_h5_data_to_df('results/local_strain.h5')
 plot_heatmap(strain_data_df, window_size=10, filename='heatmap.png')
 ```
+## 🐳&nbsp; Using the Docker Image with Your Own Data
+
+To use the MDStrainMapper Docker image with your own static PDB files, trajectory data, and custom parameters, follow these steps:
+
+1. **Prepare Your Data**:
+   - Ensure you have your static PDB files and trajectory files ready.
+   - Place them in a directory on your host machine.
+
+2. **Run the Docker Container**:
+   - Use the following command to run the Docker container, replacing the paths to your own data files and setting your custom parameters:
+
+   ```sh
+   docker run --gpus all -v /path/to/your/data:/app/data -v /path/to/your/results:/app/results ghcr.io/YOUR_GITHUB_USERNAME/mdstrainmapper:latest \
+       /app/data/open.pdb /app/data/closed.pdb /app/data/1ZNX_topology.gro /app/data/1ZNX_mdtraj.xtc 15.0 15.0 10
+
+
 ## Contributing
 Contributions are welcome! Please submit a pull request or open an issue to discuss any changes.
