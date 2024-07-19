@@ -5,11 +5,11 @@ Table of Contents
 =================
 * [ Repository Structure](#repository-structure)
 * [ Dependencies](#dependencies)
-* [ 🚀&nbsp; Getting Started](#🚀&nbsp;-getting-started)
-* [ 🧬&nbsp; Usage](#🧬&nbsp;-usage)
+* [ 🚀&nbsp; Getting Started](#install)
+* [ 🧬&nbsp; Usage](#usage)
   * [ Static Strain](#static-strain)
   * [ Trajectory Processing](#trajectory-processing)
-* [ 🐳&nbsp; Using the Docker Image with Your Own Data](#🐳&nbsp;-using-the-docker-image-with-your-own-data)
+* [ 🐳&nbsp; Using the Docker Image with Your Own Data](#docker)
 * [ Contributing](#contributing)
 
 
@@ -32,6 +32,7 @@ MDStrainMapper requires the following Python packages:
 
 Ensure you have the correct version of CUDA to use CuPy effectively.
 
+<a name="install"></a>
 ## 🚀&nbsp; Getting Started
 
 ##### Step 1: Clone the Repository
@@ -50,7 +51,7 @@ For demonstration purposes, download a sample trajectory file:
 ```sh 
 wget https://mdstrainmapper.s3.us-east-2.amazonaws.com/data/1ZNX_mdtraj.xtc
 ```
-
+<a name="usage"></a>
 ## 🧬&nbsp; Usage
 
 ### Static Strain 
@@ -110,21 +111,69 @@ process_traj(universe, output='results/local_strain.h5')
 strain_data_df = load_h5_data_to_df('results/local_strain.h5')
 plot_heatmap(strain_data_df, window_size=10, filename='heatmap.png')
 ```
+<a name="docker"></a>
 ## 🐳&nbsp; Using the Docker Image with Your Own Data
 
 To use the MDStrainMapper Docker image with your own static PDB files, trajectory data, and custom parameters, follow these steps:
 
+
+### Case 1: Calculate Static Strain Only
+
 1. **Prepare Your Data**:
-   - Ensure you have your static PDB files and trajectory files ready.
+   - Ensure you have your static PDB files ready.
    - Place them in a directory on your host machine.
 
-2. **Run the Docker Container**:
+2. **Pull the Docker Image**:
+   - Run the following command to pull the Docker image from GitHub Container Registry:
+
+   ```sh
+   docker pull ghcr.io/zahra-alavi/mdstrainmapper:latest
+   ```
+
+3. **Run the Docker Container**:
    - Use the following command to run the Docker container, replacing the paths to your own data files and setting your custom parameters:
 
    ```sh
    docker run --gpus all -v /path/to/your/data:/app/data -v /path/to/your/results:/app/results ghcr.io/zahra-alavi/mdstrainmapper:latest \
-       /app/data/open.pdb /app/data/closed.pdb /app/data/1ZNX_topology.gro /app/data/1ZNX_mdtraj.xtc 15.0 15.0 10
+    --static --static_conf1_path /app/data/open.pdb --static_conf2_path /app/data/closed.pdb --static_cutoff 15.0
+   ```
+### Case 2: Calculate Trajectory Strain Only
 
+1. **Prepare Your Data**:
+   - Ensure you have your topology and trajectory files ready.
+   - Place them in a directory on your host machine.
 
+2. **Pull the Docker Image**:
+   - Run the following command to pull the Docker image from GitHub Container Registry:
+
+   ```sh
+   docker pull ghcr.io/zahra-alavi/mdstrainmapper:latest
+   ```
+3. **Run the Docker Container**:
+   - Use the following command to run the Docker container, replacing the paths to your own data files and setting your custom parameters:
+  
+   ```sh
+   docker run --gpus all -v /path/to/your/data:/app/data -v /path/to/your/results:/app/results ghcr.io/zahra-alavi/mdstrainmapper:latest \
+    --trajectory --topology_path /app/data/1ZNX_topology.gro --trajectory_path /app/data/1ZNX_mdtraj.xtc --trajectory_cutoff 15.0 --window_size 10
+   ```
+### Case 3: Calculate Both Static and Trajectory Strain
+
+1. **Prepare Your Data**:
+   - Ensure you have your static PDB files, topology, and trajectory files ready.
+   - Place them in a directory on your host machine.
+
+2. **Pull the Docker Image**:
+   - Run the following command to pull the Docker image from GitHub Container Registry:
+
+   ```sh
+   docker pull ghcr.io/zahra-alavi/mdstrainmapper:latest
+   ```
+3. **Run the Docker Container**:
+   - Use the following command to run the Docker container, replacing the paths to your own data files and setting your custom parameters:
+   ```sh
+   docker run --gpus all -v /path/to/your/data:/app/data -v /path/to/your/results:/app/results ghcr.io/zahra-alavi/mdstrainmapper:latest \
+    --static --static_conf1_path /app/data/open.pdb --static_conf2_path /app/data/closed.pdb --static_cutoff 15.0 \
+    --trajectory --topology_path /app/data/1ZNX_topology.gro --trajectory_path /app/data/1ZNX_mdtraj.xtc --trajectory_cutoff 15.0 --window_size 10
+   ```
 ## Contributing
 Contributions are welcome! Please submit a pull request or open an issue to discuss any changes.
