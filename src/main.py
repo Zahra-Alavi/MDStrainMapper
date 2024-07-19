@@ -21,12 +21,12 @@ def calculate_static_strain(static_conf1_path, static_conf2_path, static_cutoff)
     distance_matrix_conf1 = calculate_distance(conf1)
     distance_matrix_conf2 = calculate_distance(conf2)
 
-    strains = calculate_strain(distance_matrix_conf2, distance_matrix_conf1, cutoff=static_cutoff)
+    strains = calculate_strain(distance_matrix_conf2, distance_matrix_conf1, cutoff=static_cutoff, output_csv='/app/results/static_strain.csv')
     plot_strain(strains, filename='/app/results/static_strain.png')
 
 def calculate_trajectory_strain(topology_path, trajectory_path, trajectory_cutoff, window_size):
     # Load and process trajectory
-    universe = load_universe(topology_path, trajectory_path)
+    universe = load_universe(trajectory_path, topology_path)
     process_traj(universe, output='/app/results/local_strain.h5', cutoff=trajectory_cutoff)
 
     # Plot strain heatmap

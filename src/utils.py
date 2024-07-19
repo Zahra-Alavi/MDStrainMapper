@@ -41,17 +41,16 @@ def smooth_data(df, window_size):
 
 
 def plot_heatmap(df, window_size=None, filename=None):
-    
     if window_size:
         df = smooth_data(df, window_size)
-        
-    # Convert x-axis values to ns (steps multiplied by 0.0125)
-    time_ns = df.columns * 0.0125
-    df.columns = time_ns
-    
+
     plt.figure(figsize=(15, 10))
-    sns.heatmap(df, xticklabels=50, yticklabels=10, cmap='viridis', cbar_kws={'label': 'Strain'})
-    plt.xlabel('Time (ns)')
+    sns.heatmap(df, xticklabels=int(df.shape[1] / 10), yticklabels=10, cmap='viridis', cbar_kws={'label': 'Strain'})
+    
+    # Customize x-axis ticks
+    plt.xticks(ticks=np.linspace(0, df.shape[1]-1, 10), labels=np.linspace(0, df.shape[1]-1, 10, dtype=int))
+    
+    plt.xlabel('Time (Frame Number)')
     plt.ylabel('Residue Number')
     plt.title('Heatmap of Strain vs Time')
     
@@ -60,7 +59,6 @@ def plot_heatmap(df, window_size=None, filename=None):
     else:
         plt.show()
     plt.close()
-    
  
 def plot_strain(strains, filename=None):
     # Calculate the absolute magnitude of strains

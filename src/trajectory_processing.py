@@ -44,10 +44,14 @@ def process_traj(universe, output = 'local_strain.h5', cutoff=15.0):
         strain = cp.where(valid_distances, cp.abs(current_distances - initial_distances) / initial_distances_nonzero, 0)
         local_strain[:, ts.frame] = cp.nansum(strain, axis=1) / cp.sum(valid_distances, axis=1)
 
-        print("Finished processing")
-        print("Saving data using h5py")
+    print("Finished processing")
+    print("Saving data using h5py")
 
-        # Save the data
-        local_strain_np = cp.asnumpy(local_strain)
-        with h5py.File('local_strain.h5', 'w') as f:
+    # Save the data
+    local_strain_np = cp.asnumpy(local_strain)
+    with h5py.File('local_strain.h5', 'w') as f:
             f.create_dataset('local_strain', data=local_strain_np)
+            
+            
+            
+            

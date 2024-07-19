@@ -23,7 +23,7 @@ def calculate_distance(universe):
                 distance_matrix[i, j] = distance
     return distance_matrix
 
-def calculate_strain(matrix_conf1, matrix_conf2, cutoff=15.0, output_csv='/app/results/static_strain.csv'):
+def calculate_strain(matrix_conf1, matrix_conf2, cutoff=15.0, output_csv=None):
     n = matrix_conf1.shape[0]
     strains = np.zeros(n)
     for i in range(n):
@@ -38,10 +38,10 @@ def calculate_strain(matrix_conf1, matrix_conf2, cutoff=15.0, output_csv='/app/r
                     count += 1
         if count > 0:
             strains[i] = strain_sum / count  # Average the strain over the number of valid pairs
-            
-    # Save strains to CSV
-    strain_df = pd.DataFrame(strains, columns=["Strain"])
-    strain_df.to_csv(output_csv, index=False)
+    if output_csv:     
+        # Save strains to CSV
+        strain_df = pd.DataFrame(strains, columns=["Strain"])
+        strain_df.to_csv(output_csv, index=False)
     
     return strains
 
