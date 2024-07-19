@@ -6,11 +6,8 @@ Created on Thu Jul 18 12:59:29 2024
 @author: zalavi
 """
 
-import MDAnalysis as mda
 import numpy as np
-import matplotlib.pyplot as plt
-
-
+import pandas as pd
 
 def calculate_distance(universe):
     # Selecting all amino acid residues (adjust the selection if necessary)
@@ -26,7 +23,7 @@ def calculate_distance(universe):
                 distance_matrix[i, j] = distance
     return distance_matrix
 
-def calculate_strain(matrix_conf1, matrix_conf2, cutoff=15.0):
+def calculate_strain(matrix_conf1, matrix_conf2, cutoff=15.0, output_csv='/app/results/static_strain.csv'):
     n = matrix_conf1.shape[0]
     strains = np.zeros(n)
     for i in range(n):
@@ -41,19 +38,10 @@ def calculate_strain(matrix_conf1, matrix_conf2, cutoff=15.0):
                     count += 1
         if count > 0:
             strains[i] = strain_sum / count  # Average the strain over the number of valid pairs
-    return strains
-
-
-def plot_strain(strains):
-    # Calculate the absolute magnitude of strains
-    abs_strains = np.abs(strains)
+            
+    # Save strains to CSV
+    strain_df = pd.DataFrame(strains, columns=["Strain"])
+    strain_df.to_csv(output_csv, index=False)
     
-    plt.figure(figsize=(10, 5))
-    plt.plot(abs_strains, marker='o', linestyle='-', color='b')
-    plt.xlabel('Amino Acid Index')
-    plt.ylabel('Absolute Strain')
-    plt.title('Absolute Strain vs. Amino Acid Number')
-    plt.grid(True)
-    plt.show()
-
+    return strains
 

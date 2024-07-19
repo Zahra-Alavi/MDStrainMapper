@@ -6,30 +6,10 @@ Created on Thu Jul 18 11:35:10 2024
 @author: zalavi
 """
 
-import MDAnalysis as mda
 import cupy as cp
-import numpy as np
 import h5py
 
-def load_universe(trajectory, topology = None):
-    """
-    Load the MDAnalysis Universe from a topology and trajectory file.
-    trajectory: Path to the trajectory file.
-    topology: Path to the topology file. Optional if trajectory file contains topology information.
-    return: MDAnalysis Universe object.
-    """
-    if topology:
-            universe = mda.Universe(topology, trajectory)
-    else:
-            universe = mda.Universe(trajectory)
-    print("Universe loaded successfully")
-    print("Number of atoms:", len(universe.atoms))
-    print("Total number of residues:", len((universe.select_atoms('protein')).residues))
-    return universe
-
-    
-
-def process_traj(universe, output = 'strain.h5'):
+def process_traj(universe, output = 'local_strain.h5', cutoff=15.0):
     protein = universe.select_atoms('protein')
     num_residues = len(protein.residues)
     # Initialize GPU array for centers of mass for all residues
@@ -40,8 +20,7 @@ def process_traj(universe, output = 'strain.h5'):
     cp.fill_diagonal(initial_distances, 0)
 
     # Apply cutoff for distances
-    cut_off = 1500.0
-    valid_distances = initial_distances < cut_off
+    valid_distances = initial_distances < cutoff
 
     print(f"Total number of frames in the trajectory: {len(universe.trajectory)}")
 
@@ -70,5 +49,5 @@ def process_traj(universe, output = 'strain.h5'):
 
         # Save the data
         local_strain_np = cp.asnumpy(local_strain)
-        with h5py.File('local_strain3.h5', 'w') as f:
+        with h5py.File('local_strain.h5', 'w') as f:
             f.create_dataset('local_strain', data=local_strain_np)
