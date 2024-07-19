@@ -13,9 +13,6 @@ Table of Contents
 * [ Contributing](#contributing)
 
 
-
-
-
 ## Repository Structure
 - `data/`: Contains example PDB and topology files.
 - `src/`: Contains the Python modules for strain calculation and trajectory processing.
@@ -57,11 +54,13 @@ wget https://mdstrainmapper.s3.us-east-2.amazonaws.com/data/1ZNX_mdtraj.xtc
 ## 🧬&nbsp; Usage
 
 ### Static Strain 
-Measure strain between two configurations (e.g., open and closed) as:
+Measures strain of each amino acid, between two configurations (e.g., open and closed) as:
 
 $$
 S_i = \frac{1}{N_i} \sum_{\substack{j = 1 \\ j \neq i \\ \Delta_{c}(i, j) < \text{cutoff}}}^{n} \left( \frac{\Delta_{o}(i, j) - \Delta_{c}(i, j)}{\Delta_{c}(i, j)} \right)
 $$
+
+where $S_i$ is the net strain (relative distance change) on residue i, $\Delta_{c}(i, j)$ is the distance between residues i and j in the close conformation and $\Delta_{o}(i, j)$ is the distance in the open conformation. The sum is over all the neighbors as defined by the cutoff distance. $N_i$ is the number of neighbor residues (residues within the cutoff distance.)
 
 ##### Step 1: Import Custom Modules 
 
@@ -90,6 +89,9 @@ $$
 S_i(t) = \frac{1}{N_i} \sum_{\substack{j = 1 \\ j \neq i \\ }}^{n} \left( \frac{\Delta_{i, j}(t) - \Delta_{i, j}^{\text{initial}}}{\Delta_{i, j}^{\text{initial}}} \right)
 for: \Delta_{i, j}^{\text{initial}} < \text{cutoff}
 $$
+
+where $S_i(t)$ is the net strain (relative distance change) on residue i at time t, $\Delta_{i, j}^{\text{initial}}$ is the distance between residues i and j at the beginning of the simulation ($t=0$) and $\Delta_{i, j}(t)$ is the distance between residues i and j at time t. The sum is over all the neighbors as defined by the cutoff distance. $N_i$ is the number of neighbor residues (residues within the cutoff distance.)
+
 
 ##### Step 1: Import Custom Modules
 ```python
@@ -120,7 +122,7 @@ To use the MDStrainMapper Docker image with your own static PDB files, trajector
    - Use the following command to run the Docker container, replacing the paths to your own data files and setting your custom parameters:
 
    ```sh
-   docker run --gpus all -v /path/to/your/data:/app/data -v /path/to/your/results:/app/results ghcr.io/YOUR_GITHUB_USERNAME/mdstrainmapper:latest \
+   docker run --gpus all -v /path/to/your/data:/app/data -v /path/to/your/results:/app/results ghcr.io/zahra-alavi/mdstrainmapper:latest \
        /app/data/open.pdb /app/data/closed.pdb /app/data/1ZNX_topology.gro /app/data/1ZNX_mdtraj.xtc 15.0 15.0 10
 
 
