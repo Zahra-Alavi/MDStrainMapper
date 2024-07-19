@@ -137,7 +137,7 @@ To use the MDStrainMapper Docker image with your own static PDB files, trajector
    docker run --gpus all -v /path/to/your/data:/app/data -v /path/to/your/results:/app/results ghcr.io/zahra-alavi/mdstrainmapper:latest \
     --static --static_conf1_path /app/data/open.pdb --static_conf2_path /app/data/closed.pdb --static_cutoff 15.0
    ```
-### Case 2: Calculate Trajectory Strain Only
+### Case 2: Calculate Trajectory Strain Only (GPU needed)
 
 1. **Prepare Your Data**:
    - Ensure you have your topology and trajectory files ready.
@@ -156,7 +156,7 @@ To use the MDStrainMapper Docker image with your own static PDB files, trajector
    docker run --gpus all -v /path/to/your/data:/app/data -v /path/to/your/results:/app/results ghcr.io/zahra-alavi/mdstrainmapper:latest \
     --trajectory --topology_path /app/data/1ZNX_topology.gro --trajectory_path /app/data/1ZNX_mdtraj.xtc --trajectory_cutoff 15.0 --window_size 10
    ```
-### Case 3: Calculate Both Static and Trajectory Strain
+### Case 3: Calculate Both Static and Trajectory Strain (GPU needed)
 
 1. **Prepare Your Data**:
    - Ensure you have your static PDB files, topology, and trajectory files ready.
