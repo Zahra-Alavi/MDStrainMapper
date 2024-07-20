@@ -8,6 +8,7 @@ Created on Thu Jul 18 11:35:10 2024
 
 import cupy as cp
 import h5py
+import os 
 
 def process_traj(universe, output = 'local_strain.h5', cutoff=15.0):
     protein = universe.select_atoms('protein')
@@ -45,13 +46,15 @@ def process_traj(universe, output = 'local_strain.h5', cutoff=15.0):
         local_strain[:, ts.frame] = cp.nansum(strain, axis=1) / cp.sum(valid_distances, axis=1)
 
     print("Finished processing")
-    print("Saving data using h5py")
+    print(f"Saving data to {output} using h5py")
 
     # Save the data
     local_strain_np = cp.asnumpy(local_strain)
-    with h5py.File('local_strain.h5', 'w') as f:
+    os.makedirs(os.path.dirname(output), exist_ok=True)  # Ensure the output directory exists
+    with h5py.File(output, 'w') as f:
             f.create_dataset('local_strain', data=local_strain_np)
-            
+
+    print(f"Data saved successfully to {output}")
             
             
             
