@@ -1,5 +1,5 @@
 # MDStrainMapper
-MDStrainMapper is a comprehensive tool designed to study local deformation in proteins. It provides an effective measure of strain, which captures local deformation relevant to protein function. This repository offers two main functionalities: measuring strain between two configurations and measuring strain over the course of a trajectory.
+MDStrainMapper is a comprehensive tool designed to study local deformation in proteins. It provides an effective measure of strain, which captures local deformation relevant to protein function [John M McBride and Tsvi Tlusty J. Stat. Mech. (2024)](https://doi.org/10.1088/1742-5468/ad1be7). This repository offers two main functionalities: measuring strain between two configurations and measuring strain over the course of a trajectory.
 
 Table of Contents
 =================
