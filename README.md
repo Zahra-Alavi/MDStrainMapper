@@ -1,5 +1,6 @@
 # MDStrainMapper
-MDStrainMapper is a comprehensive tool designed to study local deformation in proteins. It provides an effective measure of strain, which captures local deformation relevant to protein function [John McBride & Tsvi Tlusty (2024)](https://doi.org/10.1088/1742-5468/ad1be7). This repository offers two main functionalities: measuring strain between two configurations and measuring strain over the course of a trajectory.
+MDStrainMapper is a comprehensive tool designed to study local deformation in proteins. It provides an effective measure of strain, which captures local deformation relevant to protein function ([McBride & Tlusty 2024](https://doi.org/10.1088/1742-5468/ad1be7)). This repository offers two main functionalities: measuring strain between two configurations and measuring strain over the course of a trajectory.
+
 
 Table of Contents
 =================
@@ -35,17 +36,17 @@ Ensure you have the correct version of CUDA to use CuPy effectively.
 <a name="install"></a>
 ## 🚀&nbsp; Getting Started
 
-##### Step 1: Clone the Repository
+##### Clone the Repository
 
 ```sh
 git clone https://github.com/Zahra-Alavi/MDStrainMapper.git
 cd MDStrainMapper
 ```
-##### Step 2: Install Dependencies
+##### Install Dependencies
 ```sh
 pip install -r requirements.txt
 ```
-##### Step 3: Download the Trajectory File
+##### Download the Trajectory File
 
 For demonstration purposes, download a sample trajectory file: 
 ```sh 
@@ -63,14 +64,14 @@ $$
 
 where $S_i$ is the net strain (relative distance change) on residue i, $\Delta_{c}(i, j)$ is the distance between residues i and j in the close conformation and $\Delta_{o}(i, j)$ is the distance in the open conformation. The sum is over all the neighbors as defined by the cutoff distance. $N_i$ is the number of neighbor residues (residues within the cutoff distance.)
 
-##### Step 1: Import Custom Modules 
+##### Import Custom Modules 
 
 ```python
 from src.utils import load_universe, plot_strain
 from src.static_strain import calculate_distance, calculate_strain
 ```
 
-##### Step 2: Calculate and Plot Strain
+##### Calculate and Plot Strain
 
 ```python
 
@@ -94,19 +95,19 @@ $$
 where $S_i(t)$ is the net strain (relative distance change) on residue i at time t, $\Delta_{i, j}^{\text{initial}}$ is the distance between residues i and j at the beginning of the simulation ($t=0$) and $\Delta_{i, j}(t)$ is the distance between residues i and j at time t. The sum is over all the neighbors as defined by the cutoff distance. $N_i$ is the number of neighbor residues (residues within the cutoff distance.)
 
 
-##### Step 1: Import Custom Modules
+##### Import Custom Modules
 ```python
 from src.utils import load_h5_data_to_df, smooth_data, plot_heatmap, load_universe
 from src.trajectory_processing import process_traj
 ```
 
-##### Step 2: Load and Process Trajectory Data
+##### Load and Process Trajectory Data
 _Note: This step is computationally expensive and requires a GPU._
 ```python
 universe = load_universe('1ZNX_mdtraj.xtc', 'data/1ZNX_topology.gro')
 process_traj(universe, output='results/local_strain.h5')
 ```
-##### Step 3: Load and Plot Heatmap of Trajectory Data
+##### Load and Plot Heatmap of Trajectory Data
 ```python
 strain_data_df = load_h5_data_to_df('results/local_strain.h5')
 plot_heatmap(strain_data_df, window_size=10, filename='heatmap.png')
